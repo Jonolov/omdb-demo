@@ -5,6 +5,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 const useStyles = makeStyles((theme) => ({
   contentWrapper: {
@@ -18,6 +20,12 @@ const useStyles = makeStyles((theme) => ({
   infoList: {
     listStyle: "none",
   },
+  margin: {
+    margin: "20px",
+  },
+  homeLink: {
+    display: "flex",
+  },
 }));
 
 export default function Movie() {
@@ -27,7 +35,7 @@ export default function Movie() {
   let infoList = null;
 
   useEffect(() => {
-    fetch(`http://localhost:3000/search/movie/${id}`)
+    fetch(`/search/movie/${id}`)
       .then((response) => response.json())
       .then((data) => setData(data));
   }, []);
@@ -56,8 +64,13 @@ export default function Movie() {
           </Container>
         </div>
         <Container maxWidth="md">
-          <Link component={RouterLink} to="/">
-            {"<-- Back to search page"}
+          <Link className={classes.margin} component={RouterLink} to="/">
+            <Typography variant="button" display="block" gutterBottom>
+              <div className={classes.homeLink}>
+                <ArrowBackIcon />
+                <span>Go back</span>
+              </div>
+            </Typography>
           </Link>
         </Container>
         <Container maxWidth="md" className={classes.contentContainer}>

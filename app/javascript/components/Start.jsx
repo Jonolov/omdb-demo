@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AppBar from "@material-ui/core/AppBar";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -7,7 +6,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -48,7 +46,7 @@ export default function Album() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("searching for: ", inputValue);
-    fetch(`http://localhost:3000/search/${inputValue}`)
+    fetch(`/search/${inputValue}`)
       .then((response) => response.json())
       .then((data) => setData(data));
   };
@@ -76,8 +74,8 @@ export default function Album() {
                 noValidate
                 autoComplete="off"
               >
-                <Grid container spacing={3}>
-                  <Grid item xs={10}>
+                <Grid xs={14} container spacing={2}>
+                  <Grid item xs={9}>
                     <TextField
                       fullWidth
                       size="small"
@@ -88,7 +86,7 @@ export default function Album() {
                       onChange={(e) => setInputValue(e.target.value)}
                     />
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid item xs={3}>
                     <Button
                       size="large"
                       type="submit"
