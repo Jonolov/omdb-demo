@@ -74,7 +74,7 @@ export default function Album() {
                 noValidate
                 autoComplete="off"
               >
-                <Grid xs={14} container spacing={2}>
+                <Grid container spacing={2}>
                   <Grid item xs={9}>
                     <TextField
                       fullWidth
