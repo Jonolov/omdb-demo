@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -12,6 +12,7 @@ import Container from "@material-ui/core/Container";
 import { Link as RouterLink } from "react-router-dom";
 import Link from "@material-ui/core/Link";
 import TextField from "@material-ui/core/TextField";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -38,17 +39,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Album() {
+export default function Start(props) {
   const classes = useStyles();
   const [inputValue, setInputValue] = useState("");
   const [data, setData] = useState();
+  let { title } = useParams();
+
+  const fetchFromServer = (inputValue) => {
+    fetch(`/search/movies/${inputValue}`)
+      .then((response) => {
+        if (response.status >= 200 && response.status <= 299) {
+          return response.json();
+        } else {
+          throw Error(response.statusText);
+        }
+      })
+      .then((data) => setData(data));
+  };
+
+  useEffect(() => {
+    if (title) fetchFromServer(title);
+  }, []);
 
   const handleSubmit = (e) => {
+    fetchFromServer(inputValue);
+    props.history.push(`/movies/${inputValue}`);
     e.preventDefault();
-    console.log("searching for: ", inputValue);
-    fetch(`/search/${inputValue}`)
-      .then((response) => response.json())
-      .then((data) => setData(data));
   };
 
   return (
@@ -101,8 +117,8 @@ export default function Album() {
             </div>
           </Container>
         </div>
+
         <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
           <Grid container spacing={4}>
             {data?.Error ? (
               <div>No results found for {inputValue}</div>

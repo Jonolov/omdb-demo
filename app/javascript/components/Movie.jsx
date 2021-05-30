@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import { Link as RouterLink, useParams, useHistory } from "react-router-dom";
 import Link from "@material-ui/core/Link";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   contentWrapper: {
@@ -33,11 +34,20 @@ export default function Movie() {
   const [data, setData] = useState();
   let { id } = useParams();
   let infoList = null;
+  let history = useHistory();
 
   useEffect(() => {
     fetch(`/search/movie/${id}`)
-      .then((response) => response.json())
-      .then((data) => setData(data));
+      .then((response) => {
+        if (response.status >= 200 && response.status <= 299) {
+          return response.json();
+        } else {
+          throw Error(response.statusText);
+        }
+      })
+      .then((data) => {
+        setData(data);
+      });
   }, []);
 
   const formatInfoList = (infoData) => {
@@ -64,7 +74,7 @@ export default function Movie() {
           </Container>
         </div>
         <Container maxWidth="md">
-          <Link className={classes.margin} component={RouterLink} to="/">
+          <Link className={classes.margin} onClick={() => history.goBack()}>
             <Typography variant="button" display="block" gutterBottom>
               <div className={classes.homeLink}>
                 <ArrowBackIcon />

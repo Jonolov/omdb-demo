@@ -7,7 +7,7 @@ export default (
   <Router>
     <Switch>
       <Route path="/" exact component={Start} />
-      <Route path="/search/:title" exact component={Start} />
+      <Route path="/movies/:title" exact component={Start} />
       <Route path="/movie/:id" exact component={Movie} />
     </Switch>
   </Router>
